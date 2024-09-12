@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -11,12 +12,12 @@ import java.time.LocalDate;
 @Table(name = "usuario")
 @Getter
 @Setter
-public class Usuario {
+public class Usuario implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usuario_id")
-    private Integer usuarioId;
+    private Long usuarioId;
 
     @ManyToOne
     @JoinColumn(name = "perfil_id", nullable = false)

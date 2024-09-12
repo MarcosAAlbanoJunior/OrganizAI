@@ -11,7 +11,7 @@ public class SimulacaoFinanciamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "simulacao_financiamento_id")
-    private Integer simulacaoFinanciamentoId;
+    private Long simulacaoFinanciamentoId;
 
     @OneToOne
     @JoinColumn(name = "simulacao_compra_id", nullable = false)

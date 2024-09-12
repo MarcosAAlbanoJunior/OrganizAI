@@ -9,7 +9,7 @@ public class StatusSimulacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "status_simulacao_id")
-    private Integer statusSimulacaoId;
+    private Long statusSimulacaoId;
 
     @Column(name = "descricao_status", nullable = false, length = 50)
     private String descricaoStatus;

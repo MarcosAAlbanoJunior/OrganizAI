@@ -15,7 +15,7 @@ public class TransacoesVariaveis {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "transacao_id")
-    private Integer transacaoId;
+    private Long transacaoId;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
