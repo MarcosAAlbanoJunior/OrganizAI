@@ -37,4 +37,7 @@ public class Usuario implements Serializable {
 
     @Column(name = "renda_fixa", precision = 10, scale = 2)
     private BigDecimal rendaFixa;
+
+    @Column(name = "status_usuario", nullable = false, length = 200)
+    private String statusUsuario;
 }

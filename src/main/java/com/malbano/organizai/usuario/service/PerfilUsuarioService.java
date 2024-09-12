@@ -4,6 +4,7 @@ import com.malbano.organizai.shared.exception.NotFoundException;
 import com.malbano.organizai.shared.exception.PerfilAssociadoException;
 import com.malbano.organizai.usuario.dto.PerfilUsuarioRequest;
 import com.malbano.organizai.usuario.entity.PerfilUsuario;
+import com.malbano.organizai.usuario.mapper.PerfilUsuarioMapper;
 import com.malbano.organizai.usuario.repository.PerfilUsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,7 @@ public class PerfilUsuarioService {
 
     @Transactional
     public PerfilUsuario cadastrarPerfilUsuario(PerfilUsuarioRequest request){
-        PerfilUsuario entity = new PerfilUsuario();
-        entity.setDescricaoPerfil(request.descricaoPerfil());
+        PerfilUsuario entity = PerfilUsuarioMapper.toEntity(request);
         return repository.save(entity);
     }
 
@@ -32,9 +32,8 @@ public class PerfilUsuarioService {
     public PerfilUsuario editarPerfilUsuario(Long id, PerfilUsuarioRequest request){
         buscarPerfilUsuarioPorId(id);
 
-        PerfilUsuario entity = new PerfilUsuario();
+        PerfilUsuario entity = PerfilUsuarioMapper.toEntity(request);
         entity.setPerfilId(id);
-        entity.setDescricaoPerfil(request.descricaoPerfil());
         return repository.save(entity);
     }
 

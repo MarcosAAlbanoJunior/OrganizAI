@@ -24,8 +24,8 @@ public class ApiExceptionHandler {
             PerfilAssociadoException.class
     })
     public ResponseEntity<StandardError> handlePerfilAssociadoException(PerfilAssociadoException e, HttpServletRequest request) {
-        String error = "Object not found";
-        HttpStatus status = HttpStatus.NOT_FOUND;
+        String error = "Conflict";
+        HttpStatus status = HttpStatus.CONFLICT;
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
