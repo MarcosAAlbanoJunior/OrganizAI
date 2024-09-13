@@ -1,9 +1,13 @@
 package com.malbano.organizai.simulacao.compra.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "status_simulacao")
+@Getter
+@Setter
 public class StatusSimulacao {
 
     @Id
