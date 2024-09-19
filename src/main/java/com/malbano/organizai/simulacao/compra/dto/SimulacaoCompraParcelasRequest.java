@@ -9,7 +9,5 @@ public record SimulacaoCompraParcelasRequest(
         String descricaoCompra,
         BigDecimal valor,
         Integer quantidadeParcelas,
-        BigDecimal valorParcela,
-        LocalDate dataSimulacao,
         Boolean financiamento
 ) {}

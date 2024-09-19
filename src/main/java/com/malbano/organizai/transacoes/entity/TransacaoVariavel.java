@@ -5,12 +5,17 @@ import com.malbano.organizai.usuario.entity.Usuario;
 import jakarta.persistence.Entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "transacoes_variaveis")
-public class TransacoesVariaveis {
+public class TransacaoVariavel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

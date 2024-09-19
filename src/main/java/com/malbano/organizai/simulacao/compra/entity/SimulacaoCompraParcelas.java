@@ -38,9 +38,6 @@ public class SimulacaoCompraParcelas {
     @Column(name = "quantidade_parcelas", nullable = false)
     private Integer quantidadeParcelas;
 
-    @Column(name = "valor_parcela", nullable = false, precision = 10, scale = 2)
-    private BigDecimal valorParcela;
-
     @Column(name = "data_simulacao", nullable = false)
     private LocalDate dataSimulacao;
 
