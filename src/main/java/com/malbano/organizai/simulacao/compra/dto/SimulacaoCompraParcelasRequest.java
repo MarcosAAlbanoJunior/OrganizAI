@@ -6,6 +6,7 @@ import java.time.LocalDate;
 public record SimulacaoCompraParcelasRequest(
         Long usuarioId,
         Long statusSimulacaoId,
+        Long tipoTransacao,
         String descricaoCompra,
         BigDecimal valor,
         Integer quantidadeParcelas,

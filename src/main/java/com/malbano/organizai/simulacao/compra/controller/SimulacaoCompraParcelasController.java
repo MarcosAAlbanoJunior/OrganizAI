@@ -4,6 +4,7 @@ import com.malbano.organizai.shared.util.UriLocationUtil;
 import com.malbano.organizai.simulacao.compra.dto.ListaParcelasCompraDTO;
 import com.malbano.organizai.simulacao.compra.dto.SimulacaoCompraParcelasRequest;
 import com.malbano.organizai.simulacao.compra.entity.SimulacaoCompraParcelas;
+import com.malbano.organizai.simulacao.compra.service.EfetivarSimulacaoOrquestrador;
 import com.malbano.organizai.simulacao.compra.service.SimulacaoCompraParcelasService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.util.List;
 public class SimulacaoCompraParcelasController {
 
     SimulacaoCompraParcelasService service;
+    EfetivarSimulacaoOrquestrador efetivarCompraOrquestrador;
 
     @Autowired
     public SimulacaoCompraParcelasController(SimulacaoCompraParcelasService service) {
@@ -61,7 +63,7 @@ public class SimulacaoCompraParcelasController {
     @Operation(summary = "Simular Parcelas de uma compra")
     @PatchMapping("/efetivar-compra/{id}")
     public ResponseEntity<?> efetivarCompra(@PathVariable("id") Long id) {
-        service.efetivarCompra(id);
+        efetivarCompraOrquestrador.efetivarCompra(id);
         return ResponseEntity.noContent().build();
     }
 }

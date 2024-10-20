@@ -1,5 +1,6 @@
 package com.malbano.organizai.simulacao.compra.entity;
 
+import com.malbano.organizai.transacoes.entity.TipoTransacao;
 import com.malbano.organizai.usuario.entity.Usuario;
 import jakarta.persistence.Entity;
 
@@ -24,6 +25,10 @@ public class SimulacaoCompraParcelas {
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "tipo_transacao_id", nullable = false)
+    private TipoTransacao tipoTransacao;
 
     @ManyToOne
     @JoinColumn(name = "status_simulacao_id", nullable = false)

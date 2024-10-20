@@ -9,8 +9,10 @@ import com.malbano.organizai.simulacao.compra.entity.SimulacaoCompraParcelas;
 import com.malbano.organizai.simulacao.compra.entity.StatusSimulacao;
 import com.malbano.organizai.simulacao.compra.mapper.SimulacaoCompraParcelasMapper;
 import com.malbano.organizai.simulacao.compra.repository.SimulacaoCompraParcelasRepository;
+import com.malbano.organizai.transacoes.dto.TransacaoVariavelRequest;
 import com.malbano.organizai.transacoes.entity.TipoTransacao;
 import com.malbano.organizai.transacoes.entity.TransacaoVariavel;
+import com.malbano.organizai.transacoes.mapper.TransacaoVariavelMapper;
 import com.malbano.organizai.transacoes.service.TipoTransacaoService;
 import com.malbano.organizai.transacoes.service.TransacaoVariavelService;
 import com.malbano.organizai.usuario.entity.Usuario;
@@ -54,8 +56,9 @@ public class SimulacaoCompraParcelasService {
     public SimulacaoCompraParcelas cadastrarSimulacaoCompraParcelas(SimulacaoCompraParcelasRequest request) {
         Usuario usuario = usuarioService.buscarUsuarioPorId(request.usuarioId());
         StatusSimulacao statusSimulacao = statusSimulacaoService.buscarStatusSimulacaoPorId(request.statusSimulacaoId());
+        TipoTransacao tipoTransacao = tipoTransacaoService.buscarTipoTransacaoPorId(request.tipoTransacao());
 
-        SimulacaoCompraParcelas entity = SimulacaoCompraParcelasMapper.toEntity(request, usuario, statusSimulacao);
+        SimulacaoCompraParcelas entity = SimulacaoCompraParcelasMapper.toEntity(request, usuario, statusSimulacao, tipoTransacao);
         return repository.save(entity);
     }
 
@@ -64,6 +67,7 @@ public class SimulacaoCompraParcelasService {
         SimulacaoCompraParcelas simulacaoCompraParcelas = buscarSimulacaoCompraParcelasPorId(id);
         Usuario usuario = simulacaoCompraParcelas.getUsuario();
         StatusSimulacao statusSimulacao = simulacaoCompraParcelas.getStatusSimulacao();
+        TipoTransacao tipoTransacao = simulacaoCompraParcelas.getTipoTransacao();
 
         if(!Objects.equals(simulacaoCompraParcelas.getUsuario().getUsuarioId(), request.usuarioId())){
             usuario = usuarioService.buscarUsuarioPorId(request.usuarioId());
@@ -73,7 +77,7 @@ public class SimulacaoCompraParcelasService {
             statusSimulacao = statusSimulacaoService.buscarStatusSimulacaoPorId(request.statusSimulacaoId());
         }
 
-        SimulacaoCompraParcelas entity = SimulacaoCompraParcelasMapper.toEntity(request, usuario, statusSimulacao);
+        SimulacaoCompraParcelas entity = SimulacaoCompraParcelasMapper.toEntity(request, usuario, statusSimulacao, tipoTransacao);
         entity.setSimulacaoCompraId(id);
         return repository.save(entity);
     }
@@ -86,12 +90,6 @@ public class SimulacaoCompraParcelasService {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Status de Simulação não encontrado"));
     }
 
-    @Transactional
-    public void efetivarCompra(Long idSimulacaoParcelasCompra){
-        ListaParcelasCompraDTO listaParcelasCompraDTO = listarParcelasCompra(idSimulacaoParcelasCompra);
-        criarTransacoesSimulacao(listaParcelasCompraDTO);
-        repository.mudarStatusSimulacao(statusSimulacaoService.buscarStatusSimulacaoPorId(1L), idSimulacaoParcelasCompra);
-    }
 
     public ListaParcelasCompraDTO listarParcelasCompra(Long idSimulacaoParcelasCompra){
         ListaParcelasCompraDTO listaParcelasCompraDTO = new ListaParcelasCompraDTO();
@@ -124,21 +122,9 @@ public class SimulacaoCompraParcelasService {
         return valorTotal.divide(BigDecimal.valueOf(quantidadeParcelas),  2, RoundingMode.HALF_UP);
     }
 
-    @Transactional
-    public void criarTransacoesSimulacao(ListaParcelasCompraDTO listaParcelasCompra){
-        Usuario usuario = usuarioService.buscarUsuarioPorId(listaParcelasCompra.getUsuarioId());
-        SimulacaoCompraParcelas simulacaoCompraParcelas = buscarSimulacaoCompraParcelasPorId(listaParcelasCompra.getSimulacaoCompraId());
-        listaParcelasCompra.getParcelas().forEach(parcela ->{
-            TransacaoVariavel transacaoVariavel = new TransacaoVariavel();
-            transacaoVariavel.setUsuario(usuario);
-            transacaoVariavel.setDataTransacao(parcela.getDataParcela());
-            transacaoVariavel.setSimulacaoCompra(simulacaoCompraParcelas);
-            transacaoVariavel.setValorTransacao(parcela.getValor());
-            transacaoVariavel.setDescricaoTransacao(simulacaoCompraParcelas.getDescricaoCompra());
-            transacaoVariavel.setTipoTransacao(tipoTransacaoService.buscarTipoTransacaoPorId(1L));
-
-            transacaoVariavelService.salvarTransacaoVariavelSimulacao(transacaoVariavel);
-
-        });
+    public void alterarStatusSimulacao(Long idSimulacao){
+        StatusSimulacao statusSimulacao = statusSimulacaoService.buscarStatusSimulacaoPorId(1L);
+        repository.mudarStatusSimulacao(statusSimulacao, idSimulacao);
     }
+
 }

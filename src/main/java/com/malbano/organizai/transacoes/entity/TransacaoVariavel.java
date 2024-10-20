@@ -42,5 +42,8 @@ public class TransacaoVariavel {
 
     @Column(name = "data_transacao", nullable = false)
     private LocalDate dataTransacao;
+
+    @Column(name = "grupo_transacao", nullable = true, length = 36)
+    private String grupoTransacao;
 }
 
